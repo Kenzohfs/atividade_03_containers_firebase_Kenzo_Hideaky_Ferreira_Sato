@@ -1,13 +1,14 @@
-const listaUsuarios = [];
+const crud = require("../../crud/index");
 
-function cadastrar(data) {
+const tabelaUsers = "Users";
+
+async function cadastrar(data) {
     console.log("data: ", data);
-    retonarListaUsuarios().push(data);
-    return { message: "Usuario cadastrado com sucesso!" }
+    return await crud.save(tabelaUsers, null, data);
 }
 
-function retonarListaUsuarios() {
-    return listaUsuarios;
+async function retonarListaUsuarios() {
+    return crud.get(tabelaUsers);
 };
 
 module.exports = {

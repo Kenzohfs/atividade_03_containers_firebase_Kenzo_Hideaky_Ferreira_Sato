@@ -3,8 +3,8 @@ const router = express.Router();
 
 const cadastrar_produto_handler = require("./cadastrar_produto.handler");
 
-router.get("/", (req, res) => {
-    res.json(cadastrar_produto_handler.retonarListaProdutos());
+router.get("/", async (req, res) => {
+    res.json(await cadastrar_produto_handler.retonarListaProdutos());
 });
 
 router.post("/", async (req, res) => {

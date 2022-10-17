@@ -1,5 +1,8 @@
 const fetch = require('node-fetch');
-const listaProdutos = [];
+const crud = require('../../crud/index');
+
+const tabelaProducts = 'Products';
+const tabelaUsers = 'Users';
 
 async function cadastrar_produto(data) {
     let loginValido = false;
@@ -10,22 +13,22 @@ async function cadastrar_produto(data) {
 
     const res = await fetch('http://destino:3000/api/login', {
         method: 'post',
-        body: JSON.stringify(data),
+        body: JSON.stringify({ name: data.nameUser, password: data.password }),
         headers: { 'Content-Type': 'application/json' },
     })
 
     loginValido = await res.json();
 
     if (loginValido) {
-        retonarListaProdutos().push(data);
-        return { message: "Sucesso ao inserir o produto!" };
+        let user = await crud.getWithFilter(tabelaUsers, "==", "name", data.nameUser);
+        return await crud.save(tabelaProducts, null, { description: data.description, name: data.nameProduct, price: data.price, userCPF: user[0].cpf });
     } else {
         return { error: "Erro ao inserir um produto!" };
     }
 }
 
-function retonarListaProdutos() {
-    return listaProdutos;
+async function retonarListaProdutos() {
+    return await crud.get(tabelaProducts);
 };
 
 module.exports = {
