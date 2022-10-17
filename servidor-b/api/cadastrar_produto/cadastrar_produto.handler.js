@@ -13,17 +13,18 @@ async function cadastrar_produto(data) {
 
     const res = await fetch('http://destino:3000/api/login', {
         method: 'post',
-        body: JSON.stringify({ name: data.nameUser, password: data.password }),
+        body: JSON.stringify({ Name: data.nameUser, Password: data.password }),
         headers: { 'Content-Type': 'application/json' },
     })
 
     loginValido = await res.json();
+    console.log(loginValido);
 
     if (loginValido) {
-        let user = await crud.getWithFilter(tabelaUsers, "==", "name", data.nameUser);
-        return await crud.save(tabelaProducts, null, { description: data.description, name: data.nameProduct, price: data.price, userCPF: user[0].cpf });
+        let user = await crud.getWithFilter(tabelaUsers, "==", "Name", data.nameUser);
+        return await crud.save(tabelaProducts, null, { description: data.description, name: data.nameProduct, price: data.price, userCPF: user[0].CPF });
     } else {
-        return { error: "Erro ao inserir um produto!" };
+        return { error: "Login inválido!" };
     }
 }
 
